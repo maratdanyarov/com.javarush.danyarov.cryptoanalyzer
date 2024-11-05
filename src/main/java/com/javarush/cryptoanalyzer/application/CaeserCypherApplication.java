@@ -12,7 +12,7 @@ public class CaeserCypherApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(CaeserCypherApplication.class.getResource("/com/javarush/cryptoanalyzer/view/view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 600);
         stage.setScene(scene);
         stage.show();
 

@@ -1,25 +1,37 @@
 package com.javarush.cryptoanalyzer.controller;
 
+import com.javarush.cryptoanalyzer.model.BruteForce;
 import com.javarush.cryptoanalyzer.model.Cipher;
 import com.javarush.cryptoanalyzer.model.FileManager;
 import com.javarush.cryptoanalyzer.model.Validator;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
 
 public class CaesarCypherController {
 
     @FXML private TextField encryptKeyField;
     @FXML private TextField decryptKeyField;
-    @FXML private Button encryptButton;
-    @FXML private Button decryptButton;
-    @FXML private Button selectFileButton;
-    @FXML private Label statusLabel;
+    @FXML private TextArea bruteForceResultArea;
+//    @FXML private Button encryptButton;
+//    @FXML private Button decryptButton;
+//    @FXML private Button selectFileButton;
+    @FXML private Label encryptStatusLabel;
+    @FXML private Label decryptStatusLabel;
+    @FXML private Label bruteForceStatusLabel;
+    @FXML private ComboBox<String> languageComboBox;
+//    @FXML private Button bruteForceButton;
+//    @FXML private Button selectBruteForceFileButton;
 
     private Cipher cipher;
     private FileManager fileManager;
@@ -27,9 +39,9 @@ public class CaesarCypherController {
     private Stage stage;
     private File encryptSelectedFile;
     private File decryptSelectedFile;
+    private File bruteForceSelectedFile;
 
     public CaesarCypherController() {
-        // Initialize dependencies in the no-argument constructor
         this.cipher = new Cipher();
         this.fileManager = new FileManager();
         this.validator = new Validator();
@@ -47,9 +59,9 @@ public class CaesarCypherController {
         this.encryptSelectedFile = fileChooser.showOpenDialog(stage);
 
         if (encryptSelectedFile != null) {
-            statusLabel.setText("Selected file for encryption: " + encryptSelectedFile.getPath());
+            encryptStatusLabel.setText("Selected file for encryption: " + encryptSelectedFile.getPath());
         } else {
-            statusLabel.setText("File selection was cancelled.");
+            encryptStatusLabel.setText("File selection was cancelled.");
         }
     }
 
@@ -60,16 +72,29 @@ public class CaesarCypherController {
         this.decryptSelectedFile = fileChooser.showOpenDialog(stage);
 
         if (decryptSelectedFile != null) {
-            statusLabel.setText("Selected file for Decryption: " + decryptSelectedFile.getPath());
+            decryptStatusLabel.setText("Selected file for Decryption: " + decryptSelectedFile.getPath());
         } else {
-            statusLabel.setText("File selection was cancelled.");
+            decryptStatusLabel.setText("File selection was cancelled.");
+        }
+    }
+
+    @FXML
+    public void onBruteForceSelectFileButtonClicked() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a File for Brute Force");
+        this.bruteForceSelectedFile = fileChooser.showOpenDialog(stage);
+
+        if (bruteForceSelectedFile != null) {
+            bruteForceStatusLabel.setText("Selected file for brute force: " + bruteForceSelectedFile.getPath());
+        } else {
+            bruteForceStatusLabel.setText("File selection was cancelled.");
         }
     }
 
     @FXML
     public void onEncryptButtonClicked() {
         if (encryptSelectedFile == null) {
-            statusLabel.setText("No file selected. Please select a file first.");
+            encryptStatusLabel.setText("No file selected. Please select a file first.");
             return;
         }
 
@@ -77,41 +102,38 @@ public class CaesarCypherController {
             int key = Integer.parseInt(encryptKeyField.getText());
 
             if (!validator.isValidKey(key, cipher.getALPHABET())) {
-                statusLabel.setText("Invalid key. Please enter a valid integer within the acceptable range.");
+                encryptStatusLabel.setText("Invalid key. Please enter a valid integer within the acceptable range.");
                 return;
             }
 
             key = validator.normalizeKey(key, cipher.getALPHABET().length);
 
             if (validator.isFileExists(encryptSelectedFile.getPath()) && validator.isFileReadable(encryptSelectedFile.getPath())) {
-                String content = fileManager.readFile(encryptSelectedFile.getPath());
-                String encryptedText = cipher.encrypt(content, key);
-
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Save Encrypted File");
                 fileChooser.setInitialFileName("encrypted_output.txt");
                 File outputFile = fileChooser.showSaveDialog(stage);
 
                 if (outputFile != null) {
-                    fileManager.writeFile(encryptedText, outputFile.getPath());
-                    statusLabel.setText("Encryption successful! File saved as " + outputFile.getName());
+                    fileManager.processFile(encryptSelectedFile.getPath(), outputFile.getPath(), key, true);
+                    encryptStatusLabel.setText("Encryption successful! File saved as " + outputFile.getName());
                 } else {
-                    statusLabel.setText("File save operation was cancelled.");
+                    encryptStatusLabel.setText("File save operation was cancelled.");
                 }
             } else {
-                statusLabel.setText("File not found or is not readable.");
+                encryptStatusLabel.setText("File not found or is not readable.");
             }
         } catch (NumberFormatException e) {
-            statusLabel.setText("Invalid key. Please enter a valid integer.");
+            encryptStatusLabel.setText("Invalid key. Please enter a valid integer.");
         } catch (IOException e) {
-            statusLabel.setText("An error occurred: " + e.getMessage());
+            encryptStatusLabel.setText("An error occurred: " + e.getMessage());
         }
     }
 
     @FXML
     public void onDecryptButtonClicked() {
         if (decryptSelectedFile == null) {
-            statusLabel.setText("No file selected. Please select a file first.");
+            decryptStatusLabel.setText("No file selected. Please select a file first.");
             return;
         }
 
@@ -119,34 +141,98 @@ public class CaesarCypherController {
             int key = Integer.parseInt(decryptKeyField.getText());
 
             if (!validator.isValidKey(key, cipher.getALPHABET())) {
-                statusLabel.setText("Invalid key. Please enter a valid integer within the acceptable range.");
+                decryptStatusLabel.setText("Invalid key. Please enter a valid integer within the acceptable range.");
                 return;
             }
 
             key = validator.normalizeKey(key, cipher.getALPHABET().length);
 
             if (validator.isFileExists(decryptSelectedFile.getPath())) {
-                String content = fileManager.readFile(decryptSelectedFile.getPath());
-                String decryptedText = cipher.decrypt(content, key);
-
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Save Decrypted File");
                 fileChooser.setInitialFileName("decrypted_output.txt");
                 File outputFile = fileChooser.showSaveDialog(stage);
 
                 if (outputFile != null) {
-                    fileManager.writeFile(decryptedText, outputFile.getPath());
-                    statusLabel.setText("Decryption successful! File saved as " + outputFile.getName());
+                    fileManager.processFile(decryptSelectedFile.getPath(), outputFile.getPath(), key, false);
+                    decryptStatusLabel.setText("Decryption successful! File saved as " + outputFile.getName());
                 } else {
-                    statusLabel.setText("File save operation was cancelled.");
+                    decryptStatusLabel.setText("File save operation was cancelled.");
                 }
             } else {
-                statusLabel.setText("File not found or invalid.");
+                decryptStatusLabel.setText("File not found or invalid.");
             }
         } catch (NumberFormatException e) {
-            statusLabel.setText("Invalid key. Please enter a valid integer.");
+            decryptStatusLabel.setText("Invalid key. Please enter a valid integer.");
         } catch (IOException e) {
-            statusLabel.setText("An error occurred: " + e.getMessage());
+            decryptStatusLabel.setText("An error occurred: " + e.getMessage());
         }
+    }
+
+    @FXML
+    public void onBruteForceButtonClicked() {
+        if (bruteForceSelectedFile == null) {
+            bruteForceStatusLabel.setText("No file selected. Please select a file first.");
+            return;
+        }
+
+        String selectedLanguage = languageComboBox.getValue();
+        if (selectedLanguage == null || selectedLanguage.isEmpty()) {
+            bruteForceStatusLabel.setText("Please select the expected language.");
+            return;
+        }
+
+        try {
+            BruteForce bruteForce = new BruteForce(cipher);
+            int bestKey = bruteForce.findBestKey(bruteForceSelectedFile.getPath(), selectedLanguage);
+
+
+            if (bestKey != -1) {
+                String snippet = decryptSnippet(bruteForceSelectedFile.getPath(), bestKey);
+                bruteForceResultArea.setText("Best decryption with key " + bestKey + ":\n" + snippet);
+                bruteForceStatusLabel.setText("Brute force decryption completed. Best key: " + bestKey);
+
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Save Decrypted File");
+                alert.setHeaderText("Do you want to save the full decrypted text to a file?");
+                alert.setContentText("Click OK to save, or Cancel to dismiss.");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK){
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Save Decrypted File");
+                    fileChooser.setInitialFileName("decrypted_brute_force.txt");
+                    File outputFile = fileChooser.showSaveDialog(stage);
+
+                    if (outputFile != null) {
+                        fileManager.processFile(bruteForceSelectedFile.getPath(), outputFile.getPath(), bestKey, false);
+                        bruteForceStatusLabel.setText("Decrypted file saved as " + outputFile.getName());
+                    } else {
+                        bruteForceStatusLabel.setText("File save operation was cancelled.");
+                    }
+                }
+
+            } else {
+                bruteForceStatusLabel.setText("Failed to decrypt the text using brute force.");
+            }
+        } catch (IOException e) {
+            bruteForceStatusLabel.setText("An error occurred: " + e.getMessage());
+        }
+    }
+
+    private String decryptSnippet(String inputFilePath, int key) throws IOException {
+        StringBuilder snippetBuilder = new StringBuilder();
+        Path inputPath = Paths.get(inputFilePath);
+
+        try (BufferedReader reader = Files.newBufferedReader(inputPath, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = reader.readLine()) != null && snippetBuilder.length() < 500) {
+                String decryptedLine = cipher.decrypt(line, key);
+                snippetBuilder.append(decryptedLine).append(System.lineSeparator());
+            }
+        }
+
+        return snippetBuilder.toString();
     }
 }
