@@ -1,4 +1,4 @@
-package com.javarush.cryptoanalyzer;
+package com.javarush.cryptoanalyzer.controller;
 
 import com.javarush.cryptoanalyzer.model.Cipher;
 import com.javarush.cryptoanalyzer.model.FileManager;
@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;

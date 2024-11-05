@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.javarush.cryptoanalyzer/com.javarush.cryptoanalyzer.CaeserCypherApplication
+                            <mainClass>com.javarush.cryptoanalyzer/com.javarush.cryptoanalyzer.application.CaeserCypherApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
