@@ -1,0 +1,10 @@
+Hi! I am learning Java!
+I will be an excellent software engineer!
+Hi! I am learning Java!
+I will be an excellent software engineer!
+Hi! I am learning Java!
+I will be an excellent software engineer!
+Hi! I am learning Java!
+I will be an excellent software engineer!
+
+`
