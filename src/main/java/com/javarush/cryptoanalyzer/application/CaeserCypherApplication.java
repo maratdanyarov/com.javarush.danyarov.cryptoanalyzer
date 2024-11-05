@@ -11,7 +11,6 @@ import java.io.IOException;
 public class CaeserCypherApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        ///Users/maratdanyarov/Projects/Java/Javarush/Project 1/
         FXMLLoader fxmlLoader = new FXMLLoader(CaeserCypherApplication.class.getResource("/com/javarush/cryptoanalyzer/view/view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setScene(scene);
