@@ -28,6 +28,7 @@ Installation
 	1.	Clone the Repository
 
 git clone https://github.com/yourusername/caesar-cipher-analyzer.git
+
 cd caesar-cipher-analyzer
 
 
@@ -55,26 +56,26 @@ Usage
 
 	1.	Launch the Application
 After running the application, a GUI window will appear.
-2.	Encrypting a File
-•	Navigate to the Encrypt tab.
-•	Click on Select a File to choose the text file you wish to encrypt.
-•	Enter the encryption Key (an integer).
-•	Click Encrypt.
-•	Choose a location to save the encrypted file.
+2.	Encrypting a File 
+- Navigate to the Encrypt tab.
+- Click on Select a File to choose the text file you wish to encrypt.
+- Enter the encryption Key (an integer).
+- Click Encrypt.
+- Choose a location to save the encrypted file.
 3.	Decrypting a File
-•	Navigate to the Decrypt tab.
-•	Click on Select a File to choose the encrypted text file.
-•	Enter the decryption Key (the same key used for encryption).
-•	Click Decrypt.
-•	Choose a location to save the decrypted file.
+- Navigate to the Decrypt tab.
+- Click on Select a File to choose the encrypted text file.
+- Enter the decryption Key (the same key used for encryption).
+- Click Decrypt.
+- Choose a location to save the decrypted file.
 4.	Brute Force Decryption
-•	Navigate to the Brute Force tab.
-•	Click on Select a File to choose the encrypted text file.
-•	Select the expected Language (English or Russian).
-•	Click Start Brute Force.
-•	The application will attempt to decrypt the file without knowing the key.
-•	A snippet of the decrypted text will be displayed.
-•	Optionally, save the full decrypted text to a file.
+- Navigate to the Brute Force tab.
+- Click on Select a File to choose the encrypted text file.
+- Select the expected Language (English or Russian).
+- Click Start Brute Force.
+- The application will attempt to decrypt the file without knowing the key.
+- A snippet of the decrypted text will be displayed.
+- Optionally, save the full decrypted text to a file.
 
 Project Structure
 
