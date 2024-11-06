@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -18,21 +17,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+
+/**
+ * Controller class for the Caesar Cipher Analyzer application.
+ * Handles user interactions with the GUI.
+ */
 public class CaesarCypherController {
 
+    // FXML components
     @FXML private TextField encryptKeyField;
     @FXML private TextField decryptKeyField;
     @FXML private TextArea bruteForceResultArea;
-//    @FXML private Button encryptButton;
-//    @FXML private Button decryptButton;
-//    @FXML private Button selectFileButton;
     @FXML private Label encryptStatusLabel;
     @FXML private Label decryptStatusLabel;
     @FXML private Label bruteForceStatusLabel;
     @FXML private ComboBox<String> languageComboBox;
-//    @FXML private Button bruteForceButton;
-//    @FXML private Button selectBruteForceFileButton;
 
+    // Application components
     private Cipher cipher;
     private FileManager fileManager;
     private Validator validator;
@@ -41,17 +42,28 @@ public class CaesarCypherController {
     private File decryptSelectedFile;
     private File bruteForceSelectedFile;
 
+    /**
+     * Constructor initializes the Cipher, FileManager, and Validator instances.
+     */
     public CaesarCypherController() {
         this.cipher = new Cipher();
         this.fileManager = new FileManager();
         this.validator = new Validator();
     }
 
+    /**
+     * Sets the primary stage of the application.
+     *
+     * @param stage The primary stage.
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-
+    /**
+     * Handles the action when the "Select Encrypt File" button is clicked.
+     * Opens a file chooser dialog for selecting a file to encrypt.
+     */
     @FXML
     public void onSelectEncryptFileButtonClicked () {
         FileChooser fileChooser = new FileChooser();
@@ -65,6 +77,10 @@ public class CaesarCypherController {
         }
     }
 
+    /**
+     * Handles the action when the "Select Decrypt File" button is clicked.
+     * Opens a file chooser dialog for selecting a file to decrypt.
+     */
     @FXML
     public void onSelectDecryptFileButtonClicked () {
         FileChooser fileChooser = new FileChooser();
@@ -78,6 +94,10 @@ public class CaesarCypherController {
         }
     }
 
+    /**
+     * Handles the action when the "Select Brute Force File" button is clicked.
+     * Opens a file chooser dialog for selecting a file to decrypt using brute force.
+     */
     @FXML
     public void onBruteForceSelectFileButtonClicked() {
         FileChooser fileChooser = new FileChooser();
@@ -91,6 +111,10 @@ public class CaesarCypherController {
         }
     }
 
+    /**
+     * Handles the action when the "Encrypt" button is clicked.
+     * Encrypts the selected file using the provided key.
+     */
     @FXML
     public void onEncryptButtonClicked() {
         if (encryptSelectedFile == null) {
@@ -130,6 +154,10 @@ public class CaesarCypherController {
         }
     }
 
+    /**
+     * Handles the action when the "Decrypt" button is clicked.
+     * Decrypts the selected file using the provided key.
+     */
     @FXML
     public void onDecryptButtonClicked() {
         if (decryptSelectedFile == null) {
@@ -169,6 +197,10 @@ public class CaesarCypherController {
         }
     }
 
+    /**
+     * Handles the action when the "Brute Force" button is clicked.
+     * Attempts to decrypt the selected file by trying all possible keys.
+     */
     @FXML
     public void onBruteForceButtonClicked() {
         if (bruteForceSelectedFile == null) {
@@ -221,6 +253,14 @@ public class CaesarCypherController {
         }
     }
 
+    /**
+     * Decrypts a snippet of the file for preview purposes.
+     *
+     * @param inputFilePath The path to the input file.
+     * @param key The decryption key.
+     * @return A decrypted snippet of the file content.
+     * @throws IOException If an error occurs during file reading.
+     */
     private String decryptSnippet(String inputFilePath, int key) throws IOException {
         StringBuilder snippetBuilder = new StringBuilder();
         Path inputPath = Paths.get(inputFilePath);

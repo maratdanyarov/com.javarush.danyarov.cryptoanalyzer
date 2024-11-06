@@ -5,20 +5,37 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Class responsible for encrypting and decrypting text using the Caesar Cipher algorithm.
+ */
 public class Cipher {
     private final char[] ALPHABET;
     private final Map<Character, Integer> charToIndexMap;
 
+    /**
+     * Constructs a Cipher instance and initializes the alphabet and character index map.
+     */
     public Cipher() {
         this.ALPHABET = generateAlphabet();
         this.charToIndexMap = createCharToIndexMap();
     }
 
+    /**
+     * Returns the alphabet used for encryption and decryption.
+     *
+     * @return The character array representing the alphabet.
+     */
     public char[] getALPHABET() {
         return ALPHABET;
     }
 
-    // Encryption logic
+    /**
+     * Encrypts the given text using the Caesar Cipher algorithm with the specified shift key.
+     *
+     * @param text The text to encrypt.
+     * @param shift The number of positions to shift each character.
+     * @return The encrypted text.
+     */
     public String encrypt(String text, int shift) {
         if (text == null) {
             throw new IllegalArgumentException("Input text cannot be null.");
@@ -38,7 +55,13 @@ public class Cipher {
         return encryptedText.toString();
     }
 
-    // Decryption logic
+    /**
+     * Decrypts the given text using the Caesar Cipher algorithm with the specified shift key.
+     *
+     * @param encryptedText The text to decrypt.
+     * @param shift The number of positions each character was shifted.
+     * @return The decrypted text.
+     */
     public String decrypt(String encryptedText, int shift) {
         if (encryptedText == null) {
             throw new IllegalArgumentException("Input text cannot be null.");
@@ -62,10 +85,21 @@ public class Cipher {
         return decryptedText.toString();
     }
 
+    /**
+     * Finds the index of a character in the alphabet.
+     *
+     * @param c The character to find.
+     * @return The index of the character, or -1 if not found.
+     */
     private int indexOfChar(char c) {
         return charToIndexMap.getOrDefault(c, -1);
     }
 
+    /**
+     * Creates a mapping from characters to their indices in the alphabet.
+     *
+     * @return A map of characters to indices.
+     */
     private Map<Character, Integer> createCharToIndexMap() {
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < ALPHABET.length; i++) {
@@ -74,7 +108,11 @@ public class Cipher {
         return map;
     }
 
-    // generateAlphabet() generates alphabet for both Russian and English letters
+    /**
+     * Generates the alphabet used for encryption and decryption, including English and Russian letters, digits, and special characters.
+     *
+     * @return A character array representing the alphabet.
+     */
     private char[] generateAlphabet() {
         Set<Character> characterSet = new LinkedHashSet<>();
 
