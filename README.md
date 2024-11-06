@@ -21,61 +21,31 @@ Getting Started
 Prerequisites
 
 	•	Java Development Kit (JDK) 11 or higher
-	•	Maven
-
-Installation
-
-	1.	Clone the Repository
-
-git clone https://github.com/yourusername/caesar-cipher-analyzer.git
-
-cd caesar-cipher-analyzer
-
-
-	2.	Build the Project
-Use Maven to build the project:
-
-mvn clean install
-
-
-
-Running the Application
-
-	1.	Navigate to the Target Directory
-
-cd target
-
-
-	2.	Run the Application
-
-java -jar caesar-cipher-analyzer.jar
-
-
 
 Usage
 
 	1.	Launch the Application
-After running the application, a GUI window will appear.
-2.	Encrypting a File 
-- Navigate to the Encrypt tab.
-- Click on Select a File to choose the text file you wish to encrypt.
-- Enter the encryption Key (an integer).
-- Click Encrypt.
-- Choose a location to save the encrypted file.
-3.	Decrypting a File
-- Navigate to the Decrypt tab.
-- Click on Select a File to choose the encrypted text file.
-- Enter the decryption Key (the same key used for encryption).
-- Click Decrypt.
-- Choose a location to save the decrypted file.
-4.	Brute Force Decryption
-- Navigate to the Brute Force tab.
-- Click on Select a File to choose the encrypted text file.
-- Select the expected Language (English or Russian).
-- Click Start Brute Force.
-- The application will attempt to decrypt the file without knowing the key.
-- A snippet of the decrypted text will be displayed.
-- Optionally, save the full decrypted text to a file.
+	After running the application, a GUI window will appear.
+	2.	Encrypting a File 
+	- Navigate to the Encrypt tab.
+	- Click on Select a File to choose the text file you wish to encrypt.
+	- Enter the encryption Key (an integer).
+	- Click Encrypt.
+	- Choose a location to save the encrypted file.
+	3.	Decrypting a File
+	- Navigate to the Decrypt tab.
+	- Click on Select a File to choose the encrypted text file.
+	- Enter the decryption Key (the same key used for encryption).
+	- Click Decrypt.
+	- Choose a location to save the decrypted file.
+	4.	Brute Force Decryption
+	- Navigate to the Brute Force tab.
+	- Click on Select a File to choose the encrypted text file.
+	- Select the expected Language (English or Russian).
+	- Click Start Brute Force.
+	- The application will attempt to decrypt the file without knowing the key.
+	- A snippet of the decrypted text will be displayed.
+	- Optionally, save the full decrypted text to a file.
 
 Project Structure
 
