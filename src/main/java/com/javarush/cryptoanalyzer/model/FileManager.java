@@ -11,7 +11,6 @@ import java.nio.file.StandardOpenOption;
 
 public class FileManager {
 
-    // TODO change StringBuilder
     private Validator validator;
 
     public FileManager() {
@@ -55,51 +54,5 @@ public class FileManager {
             throw new IOException("Error processing file: " + e.getMessage(), e);
         }
     }
-
-//    public String readFile(String filePath) {
-//        if (!validator.isFileExists(filePath)) {
-//            System.out.println("File does not exist: " + filePath);
-//            return null;
-//        }
-//
-//        if (!validator.isFileReadable(filePath)) {
-//            System.out.println("File is not readable: " + filePath);
-//            return null;
-//        }
-//
-//        StringBuilder text = new StringBuilder();
-//
-//        Path path = Paths.get(filePath);
-//
-//        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                text.append(line).append(System.lineSeparator());
-//            }
-//        } catch (IOException e) {
-//            System.err.println("Error reading file: " + e.getMessage());
-//            return null;
-//        }
-//
-//        return text.toString();
-//    }
-//
-//    public void writeFile(String content, String filePath) throws IOException{
-//        if (content == null) {
-//            throw new IllegalArgumentException("Content to write cannot be null.");
-//        }
-//
-//        Path path = Paths.get(filePath);
-//
-//        Path parentDir = path.getParent();
-//        if (parentDir != null && (!Files.exists(parentDir) || !Files.isWritable(parentDir))) {
-//            throw new IOException("Cannot write to the directory: " + parentDir.toString());
-//        }
-//
-//        try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-//            writer.write(content);
-//        } catch (IOException e) {
-//            throw new IOException("Error writing to file: " + e.getMessage(), e);
-//        }
-//    }
 }
+
