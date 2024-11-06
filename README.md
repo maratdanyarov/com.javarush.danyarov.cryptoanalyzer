@@ -90,4 +90,4 @@ Acknowledgments
 
 Contact
 
-For any inquiries or feedback, please contact [maratdanyarov87@gmail.com].
+For any inquiries or feedback, please contact Marat Danyarov [maratdanyarov87@gmail.com].
